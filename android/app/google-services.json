@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "940928684444",
+    "project_id": "outshade-d10fb",
+    "storage_bucket": "outshade-d10fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940928684444:android:69c75cb13196fa6fe0b859",
+        "android_client_info": {
+          "package_name": "com.example.outshade"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "940928684444-msglbc679hm042nvkg1ef1o2t95uhb7e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.outshade",
+            "certificate_hash": "baab76f2fb3692f44d799cbe3e23da4061f3eb94"
+          }
+        },
+        {
+          "client_id": "940928684444-gvs7rrmvpniim2hleap0une3egftilmp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACBb6OhrCU00IiHhr-mxYV5NsG0OXcCaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "940928684444-gvs7rrmvpniim2hleap0une3egftilmp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
