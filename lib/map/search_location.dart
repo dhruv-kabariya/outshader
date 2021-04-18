@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:outshade/address_bloc/address_bloc.dart';
 import 'package:outshade/model/address.dart';
 
+import 'search_cubit/address_bloc/address_bloc.dart';
 import 'search_cubit/search_cubit.dart';
 
 class SearchLocation extends StatefulWidget {

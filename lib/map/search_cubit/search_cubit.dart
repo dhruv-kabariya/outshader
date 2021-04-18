@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:outshade/model/address.dart';
-import 'package:outshade/search_service.dart';
+import 'package:outshade/services/search_service.dart';
 
 part 'search_state.dart';
 

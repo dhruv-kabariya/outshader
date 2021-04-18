@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
-import 'model/address.dart';
+import '../model/address.dart';
 
 // For storing our result
 
