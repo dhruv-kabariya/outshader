@@ -1,46 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:outshade/search_cubit/search_cubit.dart';
-import 'package:geocoder/geocoder.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:outshade/address_bloc/address_bloc.dart';
 
-class AddressField extends StatelessWidget {
-  AddressField({Key key}) : super(key: key);
+class MapRender extends StatefulWidget {
+  MapRender({Key key}) : super(key: key);
 
-  final TextEditingController home = TextEditingController();
-  // final TextEditingController street = TextEditingController();
+  @override
+  _MapRenderState createState() => _MapRenderState();
+}
 
-  String map_key = 'AIzaSyA0EH9lA1RVJWQYhY3EhpOW3uSEigUWn3s';
-  final SearchCubit search = SearchCubit();
+class _MapRenderState extends State<MapRender> {
+  LatLng _center;
+  AddressBloc address;
+  Set<Marker> marker;
+
+  @override
+  void initState() {
+    address = BlocProvider.of<AddressBloc>(context);
+    _center = (address.state as AddressSelected).address.latLng;
+    marker = {
+      Marker(
+        markerId: MarkerId("marker"),
+        position: _center,
+        icon: BitmapDescriptor.defaultMarker,
+      )
+    };
+    super.initState();
+  }
+
+  void _onCameraMove(CameraPosition position) {
+    _center = position.target;
+    marker = {
+      Marker(
+        markerId: MarkerId("marker"),
+        position: position.target,
+        icon: BitmapDescriptor.defaultMarker,
+      )
+    };
+
+    address.add(NewLatlng(newLatLng: position.target));
+  }
+
+  void _onMapCreated(GoogleMapController controller) {}
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          InkWell(
-            onTap: () async {
-              var data = await PlacesAutocomplete.show(
-                context: context,
-                apiKey: map_key,
-                mode: Mode.fullscreen,
-                hint: "Search Address",
-              );
-
-              showPlaces(data.placeId);
-            },
-            child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Text("Search Address")),
-          ),
-        ],
+      child: BlocBuilder<AddressBloc, AddressState>(
+        bloc: address,
+        builder: (context, state) {
+          if (state is AddressSelected) {
+            return GoogleMap(
+              onMapCreated: _onMapCreated,
+              zoomControlsEnabled: false,
+              zoomGesturesEnabled: true,
+              scrollGesturesEnabled: true,
+              markers: marker,
+              onCameraMove: _onCameraMove,
+              initialCameraPosition: CameraPosition(target: _center, zoom: 11),
+            );
+          } else {
+            return Container();
+          }
+        },
       ),
     );
-  }
-
-  void showPlaces(String placeId) async {
-    print(placeId);
   }
 }

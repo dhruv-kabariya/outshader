@@ -15,3 +15,12 @@ class SelectAddress extends AddressEvent {
   @override
   List<Object> get props => [address];
 }
+
+class NewLatlng extends AddressEvent {
+  final LatLng newLatLng;
+
+  NewLatlng({this.newLatLng});
+
+  @override
+  List<Object> get props => [newLatLng];
+}
