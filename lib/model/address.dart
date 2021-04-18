@@ -19,8 +19,15 @@ class Place {
   String zipCode;
 
   LatLng latLng;
+  Suggestion suggestion;
 
-  Place({this.streetNumber, this.street, this.city, this.zipCode, this.latLng});
+  Place(
+      {this.streetNumber,
+      this.street,
+      this.city,
+      this.zipCode,
+      this.latLng,
+      this.suggestion});
 
   @override
   String toString() {

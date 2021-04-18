@@ -24,3 +24,12 @@ class NewLatlng extends AddressEvent {
   @override
   List<Object> get props => [newLatLng];
 }
+
+class ChangeAddress extends AddressEvent {
+  final Place address;
+
+  ChangeAddress({this.address});
+
+  @override
+  List<Object> get props => [address];
+}

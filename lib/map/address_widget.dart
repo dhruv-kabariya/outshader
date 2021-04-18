@@ -19,6 +19,7 @@ class _MapRenderState extends State<MapRender> {
   void initState() {
     address = BlocProvider.of<AddressBloc>(context);
     _center = (address.state as AddressSelected).address.latLng;
+    print(_center);
     marker = {
       Marker(
         markerId: MarkerId("marker"),
@@ -38,8 +39,8 @@ class _MapRenderState extends State<MapRender> {
         icon: BitmapDescriptor.defaultMarker,
       )
     };
-
-    address.add(NewLatlng(newLatLng: position.target));
+    print(_center);
+    address.add(NewLatlng(newLatLng: _center));
   }
 
   void _onMapCreated(GoogleMapController controller) {}
@@ -51,14 +52,50 @@ class _MapRenderState extends State<MapRender> {
         bloc: address,
         builder: (context, state) {
           if (state is AddressSelected) {
-            return GoogleMap(
-              onMapCreated: _onMapCreated,
-              zoomControlsEnabled: false,
-              zoomGesturesEnabled: true,
-              scrollGesturesEnabled: true,
-              markers: marker,
-              onCameraMove: _onCameraMove,
-              initialCameraPosition: CameraPosition(target: _center, zoom: 11),
+            return Stack(
+              children: [
+                GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  zoomControlsEnabled: false,
+                  zoomGesturesEnabled: true,
+                  scrollGesturesEnabled: true,
+                  // markers: marker,
+                  onCameraMove: _onCameraMove,
+                  initialCameraPosition:
+                      CameraPosition(target: _center, zoom: 18),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Icon(Icons.location_on),
+                ),
+                Container(
+                  margin: EdgeInsets.only(right: 20, bottom: 20),
+                  alignment: Alignment.bottomRight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          address.add(ChangeAddress(
+                              address:
+                                  (address.state as AddressSelected).address));
+                        },
+                        child: Card(
+                          elevation: 5,
+                          child: Icon(Icons.edit),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Card(
+                          elevation: 5,
+                          child: Icon(Icons.save),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             );
           } else {
             return Container();

@@ -8,7 +8,7 @@ import 'model/address.dart';
 // For storing our result
 
 class SearchService {
-  static final String apiKey = 'AIzaSyAwbNN76D5hKFyih22yGYieV_3xDNGpTSQ';
+  static final String apiKey = 'AIzaSyD--9wH195QOSLKuBZwoPlsqJIu1Knk7pE';
 
   Future<List<Suggestion>> fetchSuggestions(String input) async {
     final request =
@@ -32,18 +32,21 @@ class SearchService {
     }
   }
 
-  Future<Place> getPlaceDetailFromId(String placeId) async {
+  Future<Place> getPlaceDetailFromId(Suggestion placeId) async {
+    print(placeId.placeId);
     final request =
-        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=address_component&key=$apiKey';
+        'https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId.placeId}&key=$apiKey';
     final response = await http.get(Uri.parse(request));
 
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
+      // print(result);
       if (result['status'] == 'OK') {
         final components =
             result['result']['address_components'] as List<dynamic>;
         // build result
         final place = Place();
+        place.suggestion = placeId;
         components.forEach((c) {
           final List type = c['types'];
           if (type.contains('street_number')) {
@@ -58,13 +61,11 @@ class SearchService {
           if (type.contains('postal_code')) {
             place.zipCode = c['long_name'];
           }
-
-          final geo = result["result"]["geometry"];
-          if (type.contains('location')) {
-            place.latLng = LatLng(geo["lat"], geo["lng"]);
-            print([geo["lat"], geo["lng"]]);
-          }
         });
+        final Map geo = result["result"]["geometry"];
+        print(geo);
+        place.latLng = LatLng(geo["location"]["lat"], geo["location"]["lng"]);
+
         return place;
       }
       throw Exception(result['error_message']);

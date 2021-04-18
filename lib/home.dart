@@ -4,13 +4,10 @@ import 'package:outshade/search_cubit/search_cubit.dart';
 import 'package:outshade/search_location.dart';
 
 import 'address_bloc/address_bloc.dart';
+import 'map/address_widget.dart';
 
 class Home extends StatelessWidget {
   Home({Key key}) : super(key: key);
-
-  final TextEditingController searchController = TextEditingController();
-
-  SearchCubit search = SearchCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +17,13 @@ class Home extends StatelessWidget {
         centerTitle: true,
       ),
       body: BlocBuilder<AddressBloc, AddressState>(
+        bloc: BlocProvider.of<AddressBloc>(context),
         builder: (context, state) {
-          if (state is NoAddressSelected) {
-            return SearchLocation(
-                searchController: searchController, search: search);
+          if (state is NoAddressSelected || state is AddressChange) {
+            return SearchLocation();
           }
           if (state is AddressSelected) {
-            return Container(
-              child: Text(
-                  state.address.latLng.toString() + " " + state.address.street),
-            );
+            return MapRender();
           }
           return Container();
         },

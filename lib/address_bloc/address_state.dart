@@ -9,6 +9,15 @@ abstract class AddressState extends Equatable {
 
 class NoAddressSelected extends AddressState {}
 
+class AddressChange extends AddressState {
+  final Place address;
+
+  AddressChange({this.address});
+
+  @override
+  List<Object> get props => [address];
+}
+
 class AddressSelected extends AddressState {
   final Place address;
 
@@ -17,5 +26,3 @@ class AddressSelected extends AddressState {
   @override
   List<Object> get props => [address];
 }
-
-class ChangeAddress extends AddressState {}

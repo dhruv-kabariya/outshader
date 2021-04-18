@@ -19,14 +19,21 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     AddressEvent event,
   ) async* {
     if (event is SelectAddress) {
-      Place place = await service.getPlaceDetailFromId(event.address.placeId);
-
-      yield AddressSelected(address: place);
+      try {
+        Place place = await service.getPlaceDetailFromId(event.address);
+        print(place.latLng);
+        yield AddressSelected(address: place);
+      } catch (e) {
+        print(e.toString());
+      }
     }
     if (event is NewLatlng) {
       Place place = (state as AddressSelected).address;
       place.latLng = event.newLatLng;
       yield AddressSelected(address: place);
+    }
+    if (event is ChangeAddress) {
+      yield AddressChange(address: event.address);
     }
   }
 }
